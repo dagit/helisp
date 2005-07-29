@@ -48,21 +48,26 @@ cparen :: Parser Char
 cparen = char ')' 
 
 sexp :: Parser SExp
-sexp = try (do { char '\'';
-                 s <- lexeme sexp;
-                 return (adjustForReader s (Sym "quote"))})
-       <|> try (do { string "#'";
-                     s <- lexeme sexp;
-                     return (adjustForReader s (Sym "function"))})
+       -- first case handles quote
+sexp = do { char '\'';
+            s <- lexeme sexp;
+            return (adjustForReader s (Sym "quote"))}
+       -- This handles function quotes
+       <|> do { string "#'";
+                s <- lexeme sexp;
+                return (adjustForReader s (Sym "function"))}
+       -- This is the case for handling dotted pairs
        <|> try (do { lexeme oparen; 
                      s <- (lexeme sexp);
                      lexeme (char '.');
                      s'<- (lexeme sexp);
                      lexeme cparen;
                      return (Cons s s')})
+       -- This is the common case, when things are a list
        <|> do { lexeme oparen;
-                s <- consManyTill (lexeme sexp) (try (lexeme cparen));
+                s <- consManyTill (lexeme sexp) (lexeme cparen);
                 return s }
+       -- This is the case for atoms
        <|> do { a <- (lexeme atom);
                 return (E a) }
 
@@ -74,8 +79,7 @@ consManyTill :: GenParser tok st SExp -> GenParser tok st end ->
 consManyTill p end = do { end; return Nil}
                    <|> do { s <- p;
                             do { ss <- consManyTill p end;
-                                 return (Cons s ss) }
-                            <|> return (Cons s Nil); }
+                                 return (Cons s ss) }}
 
 whiteSpace = do { spaces; 
                   many (lexeme comment); }
