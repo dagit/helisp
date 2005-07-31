@@ -17,6 +17,7 @@ data SExp = Cons SExp SExp
 
 data Func = Prim (Env -> SExp -> SExp)
           | Func SExp
+          | Lambda
           | Funbound
 
 instance Show SExp where

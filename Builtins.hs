@@ -39,9 +39,6 @@ primApply e (Prim f) s = f e s
 
 --primLet :: Env -> SExp -> IO SExp
 
-lambda :: Env -> SExp -> SExp
-lambda e s = error ("lambda called with "++(show s))
-
 --takes a function, a list of SExp's and returns Func applied to
 -- the SExp's
 -- primMapCar :: Env -> Func -> SExp -> SExp
