@@ -19,6 +19,7 @@ data Func = Prim (Env -> SExp -> SExp)
           | Func SExp
           | Lambda
           | Funbound
+          | Special (Env -> SExp -> SExp)
 
 instance Show SExp where
          show Nil   = "nil"

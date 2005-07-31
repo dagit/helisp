@@ -41,6 +41,7 @@ builtIns = [("nil", Binding "nil" (E (Sym "nil")) Funbound),
             ("cdr", Binding "cdr" Nil (Prim primCdr)),
             ("lambda", Binding "lambda" Nil Lambda),
             ("test", Binding "test" Nil testFunc),
+            ("let", Binding "let" Nil (Special primLet)),
 --            ("reduce", Binding "reduce" Nil (Prim primFoldl)),
             ("+", Binding "+" Nil (Prim primPlus2)),
 --            ("setq", Binding "setq" Nil (Prim primSetq1)),
@@ -61,6 +62,7 @@ eval st xs = case (symbolFunction (unsafeLookupSymbol st x)) of
              (Prim p) -> p st y'
              (Func sexp) -> applyLambda sexp
              Lambda -> applyLambda x
+             (Special f) -> f st xs
      where
      x = car xs
      y = cdr xs
@@ -91,3 +93,18 @@ bindParams params values = (s, Binding s (car values) Funbound):
                            bindParams (cdr params) (cdr values)
            where
            (Sym s) = symbolFromSExp (car params)
+
+-- the input is of the form (let ((var1 initform1) ... (varN initformN))
+--                               (action1) ... (actionN))
+primLet :: Env -> SExp -> SExp
+primLet e sexp = lambda e vars actions initForms
+        where
+        declarations = car (cdr sexp)
+        vars = primMapCar e (Prim car') declarations
+        initForms = primMapCar e (Prim cadr') declarations
+        actions = cdr (cdr sexp)
+        car' _ = car
+        cadr' _ = car . cdr
+
+-- (let ((x 1) (y 1))
+--      (+ x y))
