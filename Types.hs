@@ -8,7 +8,7 @@ data Atom = Numb Number
 instance Show Atom where
          show (Numb n) = show n
          show (Str s) = show s
-         show (Sym s) = concatMap (\x -> if x=='.' then ['\\','.'] else [x]) s
+         show (Sym s) = concatMap (\x -> if x=='.' then "\\." else [x]) s
 
 data Number = I Integer
             | F Float
