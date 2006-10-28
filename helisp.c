@@ -1,5 +1,6 @@
 /* a simple driver for helisp */
 #include <sys/mman.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -13,6 +14,8 @@
 #define bool_tag     31
 #define bool_shift   7
 #define empty_list   47
+
+extern long helisp_entry(char* p);
 
 static char* allocate_protected_space(int size){
   int page = getpagesize();
@@ -38,15 +41,23 @@ static void deallocate_protected_space(char* p, int size) {
   if( status != 0 ){ exit(1); }
 }
 
-void print_ptr(int val){
-  if( (val & fixnum_mask) == fixnum_tag ){
-    printf("%d\n", val >> fixnum_shift);
-  } else if( val == empty_list ){
-    printf("()\n");
+void print_ptr(long val){
+  if ( val == empty_list ){
+    printf("()");
+  } else if( (val & fixnum_mask) == fixnum_tag ){
+    printf("%ld", val >> fixnum_shift);
   } else if( (val & char_mask) == char_tag ){
-    printf("%c\n", val >> char_shift);
+    printf("%c", (int)(val >> char_shift));
   } else if( (val & bool_mask) == bool_tag ){
-    printf("%d\n", val >> bool_shift);
+    if ( (val >> bool_shift) == 1 ){
+      printf("#t");
+    } else if( (val >> bool_shift) == 0 ){
+      printf("#f");
+    } else {
+      printf("bad bool: %d", val >> bool_shift);
+    }
+  } else {
+    printf("unkown type for value: %ld", val );
   }
 }
 
@@ -54,9 +65,7 @@ int main(int argc, char** argv){
   int stack_size = (16 * 4096); /* holds 16K cells */
   char* stack_top = allocate_protected_space(stack_size);
   char* stack_base = stack_top + stack_size;
-  printf("about to run\n"); fflush(stdout);
   print_ptr(helisp_entry(stack_base));
-  printf("done running\n"); fflush(stdout);
   deallocate_protected_space(stack_top, stack_size);
   return 0;
 

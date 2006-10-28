@@ -1,0 +1,30 @@
+Name:           Helisp
+Version:        0.1
+License:        BSD3
+Author:         Jason Dagit
+Homepage:       http://www.codersbase.com/index.php/Helisp
+Build-Depends:  base, mtl
+Synopsis:       Elisp compiler
+
+Executable:     helisp
+Main-Is:        Main.hs
+Other-Modules:  CodeGen
+                Eval
+                Immediate
+                Parser
+                SExp
+                TestHarness
+                Builtins
+                Compile
+                Helisp
+                Intermediate
+                MonadUnique
+                Parser2
+                SimpleTests
+                Registers
+                Types
+                X86_64Inst
+                X86_64Regs
+                X86_64Inst
+                X86_32Regs
+ghc-options:    -Wall -Werror
