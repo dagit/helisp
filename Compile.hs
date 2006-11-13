@@ -9,7 +9,7 @@ import Immediate
 import Registers                     
 import X86_64Inst
 import X86_64Regs
-import X86_32Inst
+import qualified X86_32Inst as X86_32 
 import X86_32Regs
 
 -- These are the code emiting combinators 
@@ -19,7 +19,7 @@ emitTypeTest a = do
   emitValueTest (tag a)
 
 emitValueTest :: RegOrImm a => a -> CodeGen Env ()
-emitValueTest a = emitTest a (sete al)
+emitValueTest a = emitTest a (X86_32.sete al)
 
 emitTest :: RegOrImm a => a -> CodeGen Env () -> CodeGen Env ()
 emitTest value test = do
@@ -101,10 +101,10 @@ emitPrim (Div x y) = do
   idiv AtSP rax
   shl (2::RegValue) rax
 emitPrim (Eqp x y)           = emitOps x y >> emitValueTest AtSP
-emitPrim (LessThan x y)      = emitOps x y >> emitTest AtSP (setl al)
-emitPrim (GreaterThan x y)   = emitOps x y >> emitTest AtSP (setg al)
-emitPrim (LessThanEq x y)    = emitOps x y >> emitTest AtSP (setle al)
-emitPrim (GreaterThanEq x y) = emitOps x y >> emitTest AtSP (setge al)
+emitPrim (LessThan x y)      = emitOps x y >> emitTest AtSP (X86_32.setl al)
+emitPrim (GreaterThan x y)   = emitOps x y >> emitTest AtSP (X86_32.setg al)
+emitPrim (LessThanEq x y)    = emitOps x y >> emitTest AtSP (X86_32.setle al)
+emitPrim (GreaterThanEq x y) = emitOps x y >> emitTest AtSP (X86_32.setge al)
 
 emitExpr :: Expr -> CodeGen Env ()
 emitExpr (E i) = emitImm i

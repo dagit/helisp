@@ -1,7 +1,7 @@
 module TestHarness where
 
---import Compile
-import Compile32
+import Compile
+--import Compile32
 import System.IO
 import System.Process
 import System.Exit

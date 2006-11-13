@@ -5,7 +5,7 @@ import Data.Char
 import Data.Bits
 import Data.Int
 
-type RegValue = Int32
+type RegValue = Int64 -- make this Int32 for 32-bit systems
 
 fixnum_mask, fixnum_tag, fixnum_shift :: RegValue
 fixnum_mask  = 3
@@ -22,7 +22,7 @@ bool_shift   = 7
 empty_list :: RegValue
 empty_list   = 47
 wordsize :: RegValue
-wordsize     = 4
+wordsize     = 8  -- make this 4 for 32-bit systems
 
 class (Show a, Eq a) => Imm a where
   toImm   :: a -> RegValue
