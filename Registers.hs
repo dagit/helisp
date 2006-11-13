@@ -10,7 +10,7 @@ data StackVariable = Ref RegValue
                      deriving (Eq, Ord)
 
 instance Show StackVariable where
-  show (Ref n) = show n ++ "(" ++ show Rsp ++ ")"
+  show (Ref n) = show n ++ "(" ++ show Esp ++ ")"
   show _       = error "oops, can't show AtSP"
 
 class RegOrImm a where
@@ -19,6 +19,9 @@ class RegOrImm a where
   isAtSP = const False
 
 instance RegOrImm Reg8 where
+  showRegOrImm = show
+
+instance RegOrImm Reg32 where
   showRegOrImm = show
   
 instance RegOrImm Reg64 where

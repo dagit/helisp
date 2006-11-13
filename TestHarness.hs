@@ -1,6 +1,7 @@
 module TestHarness where
 
-import Compile
+--import Compile
+import Compile32
 import System.IO
 import System.Process
 import System.Exit
@@ -25,7 +26,7 @@ compileAndRun p =
         ExitFailure _ -> do
           return $ Left $ "Failed to compile: " ++ errmsg
         ExitSuccess -> do
-          (pin, pout, perr, h') <- runInteractiveCommand "helisp_test"
+          (pin, pout, perr, h') <- runInteractiveCommand "./helisp_test"
           msg <- hGetContents pout
           evaluate $ length msg
           hClose pin

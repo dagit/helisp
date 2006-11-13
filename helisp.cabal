@@ -16,6 +16,7 @@ Other-Modules:  CodeGen
                 TestHarness
                 Builtins
                 Compile
+		Compile32
                 Helisp
                 Intermediate
                 MonadUnique
