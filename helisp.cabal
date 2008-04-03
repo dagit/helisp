@@ -1,13 +1,22 @@
 Name:           Helisp
 Version:        0.1
 License:        BSD3
+License-File:   LICENSE
 Author:         Jason Dagit
 Homepage:       http://www.codersbase.com/index.php/Helisp
-Build-Depends:  base, mtl
-Synopsis:       Elisp compiler
+
+Stability:      Alpha
+Category:       Compilers/Interpreters
+Synopsis:       An incomplete Elisp compiler
+Description:    The Darcs repository can be found at <http://projects.codersbase.com/repos/helisp>.
+
+Tested-With:    GHC==6.8.2
+Build-Depends:  base>=3, mtl, containers, process, parsec
+Build-Type:     Simple
 
 Executable:     helisp
-Main-Is:        Main.hs
+Main-Is:        Helisp.hs
+Hs-Source-Dirs: src
 Other-Modules:  CodeGen
                 Eval
                 Immediate
@@ -16,7 +25,7 @@ Other-Modules:  CodeGen
                 TestHarness
                 Builtins
                 Compile
-		Compile32
+                Compile32
                 Helisp
                 Intermediate
                 MonadUnique
@@ -28,4 +37,4 @@ Other-Modules:  CodeGen
                 X86_64Regs
                 X86_64Inst
                 X86_32Regs
-ghc-options:    -Wall -Werror
+ghc-options:    -Wall
