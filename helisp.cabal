@@ -2,7 +2,7 @@ Name:           Helisp
 Version:        0.1
 License:        BSD3
 License-File:   LICENSE
-Author:         Jason Dagit
+Author:         Jason Dagit <dagit@codersbase.com>
 Homepage:       http://www.codersbase.com/index.php/Helisp
 
 Stability:      Alpha
