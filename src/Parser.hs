@@ -2,9 +2,6 @@ module Parser where
 
 import Text.ParserCombinators.Parsec
 import System.IO
-import System
-import Maybe
-import qualified Data.Map as Map 
 import Types
 import SExp
 
@@ -42,10 +39,10 @@ lexeme p = do { r <- p;
                 return r }
 
 oparen :: Parser Char
-oparen = char '(' 
+oparen = char '('
 
 cparen :: Parser Char
-cparen = char ')' 
+cparen = char ')'
 
 sexp :: Parser SExp
        -- first case handles quote
@@ -57,7 +54,7 @@ sexp = do { char '\'';
                 s <- lexeme sexp;
                 return (adjustForReader s (Sym "function"))}
        -- This is the case for handling dotted pairs
-       <|> try (do { lexeme oparen; 
+       <|> try (do { lexeme oparen;
                      s <- (lexeme sexp);
                      lexeme (char '.');
                      s'<- (lexeme sexp);
@@ -74,14 +71,14 @@ sexp = do { char '\'';
 adjustForReader :: SExp -> Atom -> SExp
 adjustForReader s r = Cons (E r) (Cons s Nil)
 
-consManyTill :: GenParser tok st SExp -> GenParser tok st end -> 
+consManyTill :: GenParser tok st SExp -> GenParser tok st end ->
                 GenParser tok st SExp
 consManyTill p end = do { end; return Nil}
                    <|> do { s <- p;
                             do { ss <- consManyTill p end;
                                  return (Cons s ss) }}
 
-whiteSpace = do { spaces; 
+whiteSpace = do { spaces;
                   many (lexeme comment); }
 
 comment = do { char ';';
@@ -138,7 +135,7 @@ numAtom = do { n <- signedNumber;
 
 integer :: Parser Integer
 integer = do { i <- many1 digit;
-               return (read i); } 
+               return (read i); }
 
 float :: Parser Float
 float = do { x <- option 0 integer;
