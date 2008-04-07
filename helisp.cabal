@@ -8,7 +8,11 @@ Homepage:       http://www.codersbase.com/index.php/Helisp
 Stability:      Alpha
 Category:       Compilers/Interpreters
 Synopsis:       An incomplete Elisp compiler
-Description:    The Darcs repository can be found at <http://projects.codersbase.com/repos/helisp>.
+Description:    This is an incomplete compiler for Emacs Lisp;
+                the source might be of interest to others.
+                .
+                The Darcs repository can be found at
+                <http://projects.codersbase.com/repos/helisp>.
 
 Tested-With:    GHC==6.8.2
 Build-Depends:  base>=3, mtl, containers, process, parsec
