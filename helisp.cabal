@@ -18,6 +18,8 @@ Tested-With:    GHC==6.8.2
 Build-Depends:  base>=3, mtl, containers, process, parsec
 Build-Type:     Simple
 
+Extra-source-files: helisp.c
+
 Executable:     helisp
 Main-Is:        Helisp.hs
 Hs-Source-Dirs: src
